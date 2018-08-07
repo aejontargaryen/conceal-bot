@@ -116,9 +116,12 @@ async def price(ctx, exchange=None):
     coindata_embed = discord.Embed(title="Conceal: MapleChange", url="https://maplechange.com/markets/ccxbtc", description="Current pricing of CCX", color=0x7F7FFF)
     coindata_embed.set_thumbnail(url=config['logo_url'])    
     url = 'https://maplechange.com/api/v2/tickers/ccxbtc.json'
-    coindata_embed.add_field(name="Last", value="{0:,.0f} sats".format(round(float(coindata.json()['ticker']['last'])*100000000)), inline=True)
-    coindata_embed.add_field(name="Buy", value="{0:,.0f} sats".format(round(float(coindata.json()['ticker']['buy'])*100000000)), inline=True)
     coindata_embed.add_field(name="Sell", value="{0:,.0f} sats".format(round(float(coindata.json()['ticker']['sell'])*100000000)), inline=True)
+    coindata_embed.add_field(name="Current", value="{0:,.0f} sats".format(round(float(coindata.json()['ticker']['last'])*100000000)), inline=True)
+    coindata_embed.add_field(name="Buy", value="{0:,.0f} sats".format(round(float(coindata.json()['ticker']['buy'])*100000000)), inline=True)
+
+
+
 
     coindata_embed.add_field(name="{}-USD".format(config['symbol']),
     value="${0:,.4f} USD".format(float(coindata.json()['ticker']['sell'])*float(btc.json()['last'])), inline=True)
