@@ -33,9 +33,9 @@ client = Bot(
         pm_help=False)
 
 
-#@client.event
-#async def on_member_join(member):
-#    await send_join_pm(member, client)
+@client.event
+async def on_member_join(member):
+    await send_join_pm(member, client)
 
 
 
@@ -102,7 +102,28 @@ async def send_join_pm(member, client):
                               % currently_online)
 
 
+@client.command(pass_context=True)
+async def price(ctx, exchange=None):
+    err_embed = discord.Embed(title=":x:Error:x:", colour=discord.Colour(0xf44242))
+    coindata = requests.get("https://maplechange.com/api/v2/tickers/ccxbtc.json")
+    btc = requests.get("https://www.bitstamp.net/api/ticker/")
+    try:
+        to_json = coindata.json()
+    except ValueError:
+        err_embed.description = "The MapleChange API is down"
+        await client.say(embed = err_embed)
+        return
+    coindata_embed = discord.Embed(title="Conceal: MapleChange", url="https://maplechange.com/markets/ccxbtc", description="Current pricing of CCX", color=0x7F7FFF)
+    coindata_embed.set_thumbnail(url=config['logo_url'])    
+    url = 'https://maplechange.com/api/v2/tickers/ccxbtc.json'
+    coindata_embed.add_field(name="Last", value="{0:,.0f} sats".format(round(float(coindata.json()['ticker']['last'])*100000000)), inline=True)
+    coindata_embed.add_field(name="Buy", value="{0:,.0f} sats".format(round(float(coindata.json()['ticker']['buy'])*100000000)), inline=True)
+    coindata_embed.add_field(name="Sell", value="{0:,.0f} sats".format(round(float(coindata.json()['ticker']['sell'])*100000000)), inline=True)
 
+    coindata_embed.add_field(name="{}-USD".format(config['symbol']),
+    value="${0:,.4f} USD".format(float(coindata.json()['ticker']['sell'])*float(btc.json()['last'])), inline=True)
+    coindata_embed.add_field(name="BTC-USD", value="${0:,.2f} USD".format(float(btc.json()['last'])), inline=True)
+    await client.say(embed=coindata_embed)
 ### NETWORK COMMANDS ###
 @client.command()
 async def hashrate():
@@ -238,7 +259,7 @@ async def registerwallet(ctx, address):
         session.commit()
         tipjar_addr = "ccx7Wga6b232eSVfy8KQmBjho5TRXxX8rZ2zoCTyixfvEBQTj1g2Ysz1hZKxQtw874W3w6BZkMFSn5h3gUenQemZ2xiyyjxBR7"
         good_embed.title = "Your Tipjar Info"
-        good_embed.description = "Deposit {} to start tipping! ```transfer 0 {} <amount> -p {}```".format(config['symbol'], tipjar_addr, pid)
+        good_embed.description = "Deposit {} to start tipping! ```transfer 3 {} <amount> -p {}```".format(config['symbol'], tipjar_addr, pid)
         balance = session.query(TipJar).filter(TipJar.paymentid == pid).first()
         await client.send_message(ctx.message.author, embed = good_embed)
         return
@@ -287,7 +308,7 @@ async def updatewallet(ctx, address):
 
         tipjar_addr = "ccx7Wga6b232eSVfy8KQmBjho5TRXxX8rZ2zoCTyixfvEBQTj1g2Ysz1hZKxQtw874W3w6BZkMFSn5h3gUenQemZ2xiyyjxBR7"
         good_embed.title = "Your Tipjar Info"
-        good_embed.description = "Deposit {} to start tipping! ```transfer 0 {} <amount> -p {}```".format(config['symbol'], tipjar_addr, pid)
+        good_embed.description = "Deposit {} to start tipping! ```transfer 3 {} <amount> -p {}```".format(config['symbol'], tipjar_addr, pid)
         await client.send_message(ctx.message.author, embed = good_embed)
 
         good_embed.title = "Balance Update"
@@ -341,7 +362,7 @@ async def deposit(ctx, user: discord.User=None):
     exists = session.query(Wallet).filter(Wallet.userid == ctx.message.author.id).first()
     if exists:
         pid = gen_paymentid(exists.address)
-        good_embed.description = "Deposit {} to start tipping! ,Send the funds you want to deposit to the address: ```{}``` (Pay to: in the GUI) and enter ```{}``` in the Payment ID field. CLI users just send a transfer to the same address and payment ID.".format(config['symbol'], tipjar_addr, pid)
+        good_embed.description = "Deposit {} to start tipping! ,Send the funds you want to deposit to the address: ``{}`` (Pay to: in the GUI) and put ``{}`` in the Payment ID field. CLI users just send a transfer to the same address and payment ID.".format(config['symbol'], tipjar_addr, pid)
         balance = session.query(TipJar).filter(TipJar.paymentid == pid).first()
         if not balance:
             t = TipJar(pid, ctx.message.author.id, 0)
