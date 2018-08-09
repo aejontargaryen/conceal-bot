@@ -120,7 +120,7 @@ def build_transfer(amount, transfers, balance):
     params = {
         'fee': get_fee(amount),
         'paymentId': balance.paymentid[0:58] + balance.withdraw,
-        'mixin': 0,
+        'mixin': 3,
         'destinations': transfers
     }
     return params

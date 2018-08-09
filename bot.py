@@ -208,19 +208,19 @@ async def pools():
     await client.say(embed=stats_embed)
 
 
-# WALLET COMMANDS ###
-#@client.command(pass_context=True)
-#async def members(ctx):
-#    members = ""
-#    allID = session.query(Wallet).all()
-#    theID = 0
-#    totalID = len(allID)
-#    await client.say("List of members:")        
-#    for theID in range(0,totalID):
-#        currentID = allID[theID].userid
-#        memberName = discord.utils.get(client.get_all_members(), id=str(currentID))
-#        members = members + " @" + str(memberName)
-#    await client.say(members)
+### WALLET COMMANDS ###
+@client.command(pass_context=True)
+async def members(ctx):
+    members = ""
+    allID = session.query(Wallet).all()
+    theID = 0
+    totalID = len(allID)
+    await client.say("List of members:")        
+    for theID in range(0,totalID):
+        currentID = allID[theID].userid
+        memberName = discord.utils.get(client.get_all_members(), id=str(currentID))
+        members = members + " @" + str(memberName)
+    await client.say(members)
 
 @client.command(pass_context=True)
 async def registerwallet(ctx, address):
