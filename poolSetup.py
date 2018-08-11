@@ -22,17 +22,21 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 # Insert a Person in the person table
-new_pool = pool(url='https://api.dreamitsystems.com:1443/cxapi/live_stats', name='Official Pool', type="normal", poolurl='https://ccxpool.dreamitsystems.com')
-session.add(new_pool)
-new_pool = pool(url='https://ccx.go-mine.it/api/pool/stats', name='go mine it!', type="node", poolurl='https://ccx.go-mine.it')
+new_pool = pool(url='http://pool.conceal.network/api/live_stats', name='Official Pool', type="normal", poolurl='https://pool.conceal.network')
 session.add(new_pool)
 new_pool = pool(url='https://ccx.scecf.org:21001/live_stats', name='SCECF', type="normal", poolurl='https://ccx.scecf.org')
 session.add(new_pool)
-new_pool = pool(url='https://conceal.herominers.com/api/stats', name='herominers', type="normal", poolurl='https://conceal.herominers.com')
+new_pool = pool(url='https://ccx.bluerockpools.net:8119/live_stats', name='Blue Rock Pool', type="normal", poolurl='https://ccx.bluerockpools.net')
 session.add(new_pool)
 new_pool = pool(url='http://minexmr24.ru:8124/live_stats', name='CCX Майнинг пул', type="normal", poolurl='http://ccx.minexmr24.ru')
 session.add(new_pool)
-
+new_pool = pool(url='https://ccx.go-mine.it/api/pool/stats', name='go mine it!', type="node", poolurl='https://ccx.go-mine.it')
+session.add(new_pool)
+new_pool = pool(url='https://api.ccx.heigh-ho.funkypenguin.co.nz/live_stats', name='Funky Penguin', type="normal", poolurl='https://ccx.heigh-ho.funkypenguin.co.nz')
+session.add(new_pool)
+new_pool = pool(url='https://conceal.herominers.com/api/stats', name='herominers', type="normal", poolurl='https://conceal.herominers.com')
+session.add(new_pool)
+new_pool = pool(url='https://ccx.thepiratemine.nl:2890/live_stats', name='ThePirateMine', type="normal", poolurl='https://ccx.thepiratemine.nl')
+session.add(new_pool)
 session.commit()
 
- 
