@@ -118,7 +118,7 @@ async def price(ctx, exchange=None):
     url = 'https://maplechange.com/api/v2/tickers/ccxbtc.json'
     coindata_embed.add_field(name="Sell", value="{0:,.0f} sats".format(round(float(coindata.json()['ticker']['sell'])*100000000)), inline=True)
     coindata_embed.add_field(name="Current", value="{0:,.0f} sats".format(round(float(coindata.json()['ticker']['last'])*100000000)), inline=True)
-    coindata_embed.add_field(name="Buy", value="{0:,.0f} sats".format(round(float(coindata.json()['ticker']['buy'])*100000000)), inline=True)
+    coindata_embed.add_field(name="High", value="{0:,.0f} sats".format(round(float(coindata.json()['ticker']['high'])*100000000)), inline=True)
 
 
 
